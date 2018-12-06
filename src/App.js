@@ -8,7 +8,14 @@ function App() {
     { text: "Build really cool todo app" }
   ]);
 
-  return createElement('h1', {id: 'helloID'}, 'olá mundo')
+  console.dir(todos)
+
+  return createElement('div', null, [
+    createElement('h1', {key: 'heading'}, 'ToDo'),
+    createElement('ul', {className: 'todo', key: 'list'}, 
+      todos.map((e, i) => createElement('li', {className: 'todo-list', key: e.text}, e.text))
+    )
+  ])
 }
 
 export default App

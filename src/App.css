@@ -41,9 +41,12 @@
 .todo {
   background: lightgray;
   border-radius: 4px;
+  padding: 4px;
+  list-style-type:none;
 }
 
 .todo-list {
   background: gray;
+  margin: 4px 8px;
   border-radius: 4px;
 }
