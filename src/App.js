@@ -3,9 +3,9 @@ import './App.css'
 
 function App() {
   const [todos, setTodos] = useState([
-    { text: "Learn about React" },
-    { text: "Meet friend for lunch" },
-    { text: "Build really cool todo app" }
+    { text: "Learn about React" , id: "jfmew" },
+    { text: "Meet friend for lunch", id: "utmxg" },
+    { text: "Build really cool todo app", id: "itmxg" }
   ]);
 
   console.dir(todos)
@@ -13,7 +13,7 @@ function App() {
   return createElement('div', null, [
     createElement('h1', {key: 'heading'}, 'ToDo'),
     createElement('ul', {className: 'todo', key: 'list'}, 
-      todos.map((e, i) => createElement('li', {className: 'todo-list', key: e.text}, e.text))
+      todos.map((e, i) => createElement('li', {className: 'todo-list', key: e.id}, e.text))
     )
   ])
 }
