@@ -2,18 +2,25 @@ import { useState, createElement} from 'react'
 import './App.css'
 
 function App() {
-  const [todos, setTodos] = useState([
-    { text: "Learn about React" , id: "jfmew" },
-    { text: "Meet friend for lunch", id: "utmxg" },
-    { text: "Build really cool todo app", id: "itmxg" }
-  ]);
+  const [todo, setTodo] = useState([
+    { text: "ToDo 1"},
+    { text: "ToDo 2" },
+    { text: "ToDo 3" }
+  ])
 
-  console.dir(todos)
+  const [input, setInput] = useState("")
+
+  const todoPush = e => {
+    setTodo([...todo, {text: input}])
+  }
 
   return createElement('div', null, [
     createElement('h1', {key: 'heading'}, 'ToDo'),
+    createElement('input', {type: 'text', key: 'inputText', onChange: e => setInput(e.target.value)}),
+    createElement('button', {type: 'button', key: 'add', onClick: todoPush}, 'add'),
+    createElement('br', {key: 'br'}),
     createElement('ul', {className: 'todo', key: 'list'}, 
-      todos.map((e, i) => createElement('li', {className: 'todo-list', key: e.id}, e.text))
+      todo.map((e, i) => createElement('li', {className: 'todo-list', key: e.id}, e.text))
     )
   ])
 }
