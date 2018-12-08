@@ -1,9 +1,9 @@
 import { useState, createElement} from 'react'
 import './App.css'
 
-function Item({text, isCompleted, id}) {
-  return createElement('li', {className: 'todo-list', key: `li-${id}`}, [
-    createElement('input', {type: 'checkbox', defaultChecked: isCompleted, key: `check-${id}`}),
+function Item({text, isCompleted, checkClick, id}) {
+  return createElement('li', {className: `todo-list${isCompleted ? ' strike' : ''}`, key: `li-${id}`}, [
+    createElement('input', {type: 'checkbox', defaultChecked: isCompleted, onClick: () => checkClick(id), key: `check-${id}`}),
     text
   ])
 }
@@ -22,12 +22,20 @@ function Input({onChange, onClick}) {
 
 
 const rChar = () => String.fromCharCode(Math.trunc(Math.random()*26) + 97)
-const mkKeyGen = arr => () => {
-  let key
-  while(arr.includes(key = rChar() + rChar() + rChar() + rChar())){
-    
+const mkKeyGen = arr => {
+  const keys = new Set(arr)
+  return k => {
+    if (k) {
+      keys.delete(k)
+    } else {
+      let key = rChar() + rChar() + rChar() + rChar()
+      while(keys.has(key)) {
+        key = rChar() + rChar() + rChar() + rChar()
+      }
+      keys.add(key)
+      return key
+    }
   }
-  return key
 }
 const keyGen = mkKeyGen(['avde', 'dcrg', 'otcj'])
 
@@ -46,8 +54,12 @@ function App() {
     setTodo([...todo, {text: input, isCompleted: false , id: keyGen}])
   }
   const toggleId = id => {
+    console.log(id)
     const t = todo.find(e => e.id === id)
+    keyGen(t.id)
+    t.id = keyGen()
     t.isCompleted = !t.isCompleted
+    console.dir(todo)
     return [...todo]
   }
 
@@ -58,9 +70,14 @@ function App() {
     Heading(),
     Input({onChange: inputChange, onClick: todoPush}),
     createElement('ul', {className: 'todo', key: 'list'}, 
-      todo.map(Item)
+      todo.map(e => Item({...e, checkClick: toggleId}))
     )
   ])
 }
 
 export default createElement(App)
+/**
+ * https://scotch.io/tutorials/build-a-react-to-do-app-with-react-hooks-no-class-components
+ * https://github.com/mahenrique94/video-react-hooks/blob/master/src/AppHook.js
+ * https://reactjs.org/docs/hooks-reference.html#useref
+ */

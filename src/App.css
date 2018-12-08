@@ -50,3 +50,7 @@
   margin: 4px 8px;
   border-radius: 4px;
 }
+
+.strike {
+  text-decoration: line-through;
+}
