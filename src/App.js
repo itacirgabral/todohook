@@ -1,8 +1,11 @@
 import { useState, createElement} from 'react'
 import './App.css'
 
-function Item(e, i) {
-  return createElement('li', {className: 'todo-list', key: e.id}, e.text)
+function Item({text, isCompleted, id}) {
+  return createElement('li', {className: 'todo-list', key: `li-${id}`}, [
+    createElement('input', {type: 'checkbox', defaultChecked: isCompleted, key: `check-${id}`}),
+    text
+  ])
 }
 
 function Heading() {
@@ -35,12 +38,17 @@ const keyGen = mkKeyGen(['avde', 'dcrg', 'otcj'])
 */
 function App() {
   const [todo, setTodo] = useState([
-    { text: 'ToDo 1', id: 'avde'},
-    { text: 'ToDo 2', id: 'dcrg'},
-    { text: 'ToDo 3', id: 'otcj'}
+    { text: 'ToDo 1', isCompleted: true , id: 'avde'},
+    { text: 'ToDo 2', isCompleted: false , id: 'dcrg'},
+    { text: 'ToDo 3', isCompleted: false , id: 'otcj'}
   ])
   const todoPush = e => {
-    setTodo([...todo, {text: input, id: keyGen}])
+    setTodo([...todo, {text: input, isCompleted: false , id: keyGen}])
+  }
+  const toggleId = id => {
+    const t = todo.find(e => e.id === id)
+    t.isCompleted = !t.isCompleted
+    return [...todo]
   }
 
   const [input, setInput] = useState("")
