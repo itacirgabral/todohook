@@ -60,7 +60,7 @@ function App() {
     t.id = keyGen()
     t.isCompleted = !t.isCompleted
     console.dir(todo)
-    return [...todo]
+    setTodo([...todo])
   }
 
   const [input, setInput] = useState("")
