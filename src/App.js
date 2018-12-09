@@ -51,15 +51,13 @@ function App() {
     { text: 'ToDo 3', isCompleted: false , id: 'otcj'}
   ])
   const todoPush = e => {
-    setTodo([...todo, {text: input, isCompleted: false , id: keyGen}])
+    setTodo([...todo, {text: input, isCompleted: false , id: keyGen()}])
   }
   const toggleId = id => {
-    console.log(id)
     const t = todo.find(e => e.id === id)
     keyGen(t.id)
     t.id = keyGen()
     t.isCompleted = !t.isCompleted
-    console.dir(todo)
     setTodo([...todo])
   }
 
@@ -70,7 +68,9 @@ function App() {
     Heading(),
     Input({onChange: inputChange, onClick: todoPush}),
     createElement('ul', {className: 'todo', key: 'list'}, 
-      todo.map(e => Item({...e, checkClick: toggleId}))
+      todo.filter(e => e.isCompleted === false).map(e => Item({...e, checkClick: toggleId})).concat(
+        todo.filter(e => e.isCompleted === true).map(e => Item({...e, checkClick: toggleId}))
+      )
     )
   ])
 }
