@@ -1,4 +1,4 @@
-import { useState, createElement} from 'react'
+import { useState, useRef, createElement} from 'react'
 import './App.css'
 
 function Item({text, isCompleted, checkClick, id}) {
@@ -12,9 +12,9 @@ function Heading() {
   return createElement('h1', {key: 'heading'}, 'ToDo')
 }
 
-function Input({onChange, onClick}) {
+function Input({onChange, onClick, textRef}) {
   return createElement('div', {className: 'input', key: 'Input'}, [
-    createElement('input', {type: 'text', onChange, key: 'fild'}),
+    createElement('input', {type: 'text', onChange, ref: textRef, key: 'fild'}),
     createElement('button', {type: 'button', key: 'add', onClick}, 'add'),
     createElement('br', {key: 'br'}),
   ])  
@@ -63,10 +63,16 @@ function App() {
 
   const [input, setInput] = useState("")
   const inputChange = e => setInput(e.target.value)
+  const textRef = useRef(null)
+
+  const addClean = () => {
+    todoPush()
+    textRef.current.value = ''
+  }
 
   return createElement('div', {className: 'app'}, [
     Heading(),
-    Input({onChange: inputChange, onClick: todoPush}),
+    Input({onChange: inputChange, onClick: addClean, textRef}),
     createElement('ul', {className: 'todo', key: 'list'}, 
       todo.filter(e => e.isCompleted === false).map(e => Item({...e, checkClick: toggleId})).concat(
         todo.filter(e => e.isCompleted === true).map(e => Item({...e, checkClick: toggleId}))
